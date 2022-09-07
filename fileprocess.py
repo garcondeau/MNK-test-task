@@ -27,7 +27,6 @@ def update_db():
             db_info["DB_NAME"])
     except:
         print("Error while connecting to MySQL")
-    mydb.engine.execute(f"CREATE DATABASE IF NOT EXISTS {db_info['DB_NAME']};")
 
     mydb.engine.execute(f"USE {db_info['DB_NAME']};")
     # sql = 'SELECT  main_part_number, manufacturer, category, origin, IFNULL(deposit.deposit, 0) AS deposit, price.price, REPLACE(quantity.quantity, " > ", "") as quantity, quantity.warehouse, IFNULL(price + deposit.deposit, price) AS total FROM data LEFT JOIN deposit ON data.part_number = deposit.part_number JOIN price ON data.part_number = price.part_number JOIN quantity ON data.part_number = quantity.part_number WHERE quantity.warehouse = "A" OR quantity.warehouse = "H" OR quantity.warehouse = "J" OR quantity.warehouse = "3" OR quantity.warehouse = "9" AND (price + deposit.deposit) > 2 UNION SELECT main_part_number, manufacturer, category, origin, IFNULL(deposit.deposit, 0) AS deposit, price.price, REPLACE(quantity.quantity, " > ", "") as quantity, quantity.warehouse, IFNULL(price + deposit.deposit, price) AS total FROM data RIGHT JOIN deposit ON data.part_number = deposit.part_number JOIN price ON data.part_number = price.part_number JOIN quantity ON data.part_number = quantity.part_number WHERE quantity.warehouse = "A" OR quantity.warehouse = "H" OR quantity.warehouse = "J" OR quantity.warehouse = "3" OR quantity.warehouse = "9" AND (price + deposit.deposit) > 2'
@@ -65,8 +64,5 @@ def update_db():
 
 
 def process_file(file):
-    # unpack_file(file)
+    unpack_file(file)
     update_db()
-
-
-update_db()
